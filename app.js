@@ -359,7 +359,7 @@ function updateSessionUI(user) {
   $("#memberCta").hidden = signed;
   $("#authOpenBtn").textContent = recoveryMode ? 'Cambiar contraseña' : signed ? "Mi cuenta" : "Acceder";
   if (signed && !recoveryMode && (changed || !currentProfile)) void loadProfile();
-  else {
+  else if (!signed) {
     currentProfile = null;
     $("#resourcesBox").hidden = true;
   }

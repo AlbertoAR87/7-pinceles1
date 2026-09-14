@@ -20,7 +20,9 @@
 6. Esperar a que GitHub valide DNS y emita el certificado; activar Enforce HTTPS cuando esté disponible.
 7. Verificar raíz y www por HTTPS, la redirección canónica y la carga de CSS/JS/logo.
 
-Los registros observados el 14-09-2026 para el dominio raíz eran 172.66.3.26 y 162.159.143.30: no son las direcciones directas de GitHub Pages. Pueden corresponder a un proxy; no cambiar sin revisar el proveedor.
+Los registros observados el 14-09-2026 para el dominio raíz eran 172.66.3.26 y 162.159.143.30: no son las direcciones directas de GitHub Pages. Los servidores DNS autoritativos son dns111.ovh.net y ns111.ovh.net. La zona no está en la cuenta Cloudflare conectada. Preparar el cambio desde OVH conservando una copia de los registros anteriores y sin modificar MX/TXT de correo.
+
+GitHub Pages está activado con GitHub Actions y HTTPS en https://albertoar87.github.io/7-pinceles1/. El dominio personalizado aún no se ha asignado en Pages para evitar redirigir esta dirección operativa hacia un dominio que sigue apuntando a otro alojamiento.
 
 Fuente: https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
 

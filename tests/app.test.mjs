@@ -117,3 +117,35 @@ test('nonmembers cannot see or request private resources', async () => {
   assert.equal(t.calls.some(c=>c.table==='member_resources'),false);
   assert.equal(t.$('#resourcesBox').hidden,true); t.dom.window.close();
 });
+test('token refresh preserves an active member profile and resources', async () => {
+  const t=setup({status:'active'}); t.event('SIGNED_IN'); await wait();
+  assert.equal(t.$('#resourcesBox').hidden,false);
+  t.event('TOKEN_REFRESHED'); await wait();
+  assert.equal(t.$('#resourcesBox').hidden,false); t.dom.window.close();
+});
+test('successful password recovery calls updateUser and restores private area', async () => {
+  let saved;
+  const t=setup({auth:{updateUser:async payload=>{saved=payload; return {error:null};}}});
+  t.event('PASSWORD_RECOVERY'); await wait();
+  t.$('#newPassword').value='NewExample123!'; t.$('#confirmPassword').value='NewExample123!';
+  t.submit('#newPasswordForm'); await wait();
+  assert.equal(saved.password,'NewExample123!');
+  assert.match(t.$('#authMsg').textContent,/actualizada/);
+  assert.equal(t.$('#memberPanel').hidden,false); t.dom.window.close();
+});
+test('registration uses the hosting base URL for email confirmation', async () => {
+  let saved;
+  const t=setup({auth:{signUp:async payload=>{saved=payload; return {data:{session:null},error:null};}}});
+  t.$('#registerName').value='Prueba Web'; t.$('#registerEmail').value='test@example.org';
+  t.$('#registerPassword').value='Example123!'; t.$('#registerPrivacy').checked=true;
+  t.submit('#registerForm'); await wait();
+  assert.equal(saved.options.emailRedirectTo,'https://example.org/7-pinceles1/');
+  assert.match(t.$('#authMsg').textContent,/Revisa tu correo/); t.dom.window.close();
+});
+test('profile update sends editable fields and updates greeting', async () => {
+  const t=setup(); t.event('SIGNED_IN'); await wait();
+  t.$('#profileName').value='Nombre Editado'; t.submit('#profileForm'); await wait();
+  const call=t.calls.find(c=>c.operation==='update');
+  assert.deepEqual(Object.keys(call.payload).sort(),['city','full_name','phone']);
+  assert.equal(t.$('#memberGreeting').textContent,'Hola, Nombre'); t.dom.window.close();
+});
