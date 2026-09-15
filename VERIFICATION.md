@@ -1,4 +1,4 @@
-# Verificación de la web — 14 de septiembre de 2026
+# Verificación de la web — actualizada el 15 de septiembre de 2026
 
 ## Publicación
 
@@ -21,16 +21,27 @@ El CNAME contiene sietepinceles.es, pero el dominio no se ha asignado en Pages n
 - Login real con credenciales inexistentes: mensaje de error en español, formulario reutilizable, sin error de JavaScript registrado.
 - Alta real mediante API con alias del correo del responsable: HTTP 200, usuario creado, confirmation_sent_at informado y email_confirmed_at todavía vacío. No se recibió una sesión sin confirmar el correo.
 
+## Pruebas reales adicionales del 15 de septiembre
+
+- La cuenta técnica figura con correo confirmado en Supabase. No se ha observado directamente el clic de confirmación.
+- Login correcto desde la web publicada y sesión conservada al recargar.
+- Edición de nombre, mensaje de guardado y persistencia tras recarga; comprobado también en la base de datos.
+- Solicitud de asociado enviada desde el navegador, marcada expresamente como prueba que no debe tramitarse. Confirmación visual y estado pending comprobado en la base de datos.
+- Cierre de sesión: se oculta el perfil y se limpia la interfaz privada.
+- Solicitud real de recuperación desde el navegador: mensaje de confirmación y recovery_sent_at informado. Esto no certifica recepción ni cambio de contraseña.
+- Site URL corregida de localhost a https://albertoar87.github.io/7-pinceles1/ y esa misma dirección añadida a Redirect URLs. Persistencia verificada tras recargar el panel.
+- Inspección del panel de correo: SMTP personalizado desactivado. Sigue pendiente un proveedor para el registro público.
+
 ## Pendiente: no certificado de extremo a extremo
 
-- Recepción y clic en el correo de confirmación de la cuenta de prueba.
-- Login correcto de esa cuenta desde la web publicada, persistencia de perfil y solicitud desde el navegador y validación tras aprobación administrativa.
+- Observación de recepción y clic en un correo de confirmación con la configuración corregida.
+- Vista de asociado activo en el navegador. La revisión automática rechazó elevar temporalmente los permisos de la cuenta técnica sin autorización explícita; no se aplicó el cambio.
 - Entrega de recuperación, enlace válido, cambio real de contraseña y login con la nueva contraseña.
-- Revisión de Site URL, redirect URLs y SMTP en el panel de Supabase; el navegador requiere iniciar sesión. Resend conectado no tiene dominios ni correos enviados.
+- Configuración de SMTP de producción. Resend conectado no tenía dominios ni correos enviados en la revisión del 14 de septiembre.
 - Dominio propio y www, DNS de OVH, certificado y redirección canónica.
 - Restauración de una copia de seguridad.
 
-La prueba de alta ha dejado una cuenta técnica pendiente de confirmar. No representa una persona asociada ni impacto social. Los usuarios de las pruebas SQL no se conservan.
+La prueba conserva una cuenta técnica confirmada con estado registered y una solicitud pending marcada como prueba. No representa una persona asociada ni impacto social. Los usuarios de las pruebas SQL no se conservan.
 
 ## Cambios en Supabase
 

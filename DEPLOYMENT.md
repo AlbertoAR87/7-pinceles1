@@ -28,7 +28,7 @@ Fuente: https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-gi
 
 ## Supabase Auth y correo
 
-Configurar Site URL a la URL que finalmente esté publicada. Cuando el dominio funcione, usar https://sietepinceles.es/.
+El 15-09-2026 se guardó y verificó Site URL https://albertoar87.github.io/7-pinceles1/ y la misma dirección como única Redirect URL. SMTP personalizado está desactivado. Cuando el dominio funcione, cambiar Site URL a https://sietepinceles.es/.
 Añadir como redirect URLs exactas las direcciones realmente usadas:
 
 - https://sietepinceles.es/
