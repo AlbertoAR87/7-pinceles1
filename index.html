@@ -21,10 +21,14 @@
     </a>
     <button id="menuBtn" class="menu-btn" aria-expanded="false" aria-controls="mainNav">Menú</button>
     <nav id="mainNav" class="main-nav" aria-label="Navegación principal">
-      <a href="#mision">Misión</a>
-      <a href="#actividades">Actividades</a>
-      <a href="#evento">Próximo taller</a>
-      <a href="#asociados">Asociados</a>
+      <details class="nav-group">
+        <summary>Conócenos</summary>
+        <div class="nav-dropdown"><a href="#mision">Nuestra misión</a><a href="#transparencia">Transparencia</a></div>
+      </details>
+      <details class="nav-group">
+        <summary>Participa</summary>
+        <div class="nav-dropdown"><a href="#actividades">Actividades</a><a href="#evento">Próximo taller</a><a href="#asociados">Zona de asociados</a></div>
+      </details>
       <a href="#contacto">Contacto</a>
       <button id="authOpenBtn" class="btn btn-small" type="button">Acceder</button>
     </nav>
@@ -188,6 +192,7 @@
     </section>
   </main>
 
+  <div class="organic-divider" aria-hidden="true"><span>VII</span></div>
   <footer class="site-footer">
     <div class="footer-brand"><img src="logo.svg" alt="" width="46" height="46"><span><strong>7 Pinceles</strong><small>El arte del desorden</small></span></div>
     <p>Ibiza · Actividades online abiertas a España</p>
@@ -244,6 +249,7 @@
     <p id="authMsg" class="form-msg" role="status"></p>
   </dialog>
 
+  <script src="effects.js" defer></script>
   <script type="module" src="app.js"></script>
 </body>
 </html>

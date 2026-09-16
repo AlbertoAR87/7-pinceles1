@@ -110,3 +110,40 @@ input:focus,textarea:focus{border-color:var(--bronze2);box-shadow:0 0 0 3px rgba
   .site-footer{align-items:flex-start;flex-direction:column}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+/* Organic interaction layer: short, finite movement and native navigation. */
+.site-header{background:rgba(18,19,15,.64);backdrop-filter:blur(4px);transition:background .25s,border-color .25s,box-shadow .25s,backdrop-filter .25s}
+.site-header.is-scrolled{background:rgba(18,19,15,.96);backdrop-filter:blur(14px);border-color:rgba(111,139,114,.32);box-shadow:0 8px 30px #0003}
+.nav-group{position:relative}
+.nav-group summary{list-style:none;cursor:pointer;color:var(--muted);padding:.65rem .15rem;font-size:.94rem;display:flex;align-items:center;gap:.65rem}
+.nav-group summary::-webkit-details-marker{display:none}
+.nav-group summary::after{content:'';width:6px;height:6px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg);transition:transform .22s}
+.nav-group[open] summary::after{transform:rotate(225deg)}
+.nav-group[open] summary,.nav-group summary:hover{color:var(--text)}
+.nav-dropdown{position:absolute;top:100%;left:-1rem;min-width:220px;padding:.6rem;background:#20231b;border:1px solid #596044;border-radius:5px 16px 8px 16px;box-shadow:var(--shadow)}
+.nav-dropdown a{display:block;padding:.7rem .85rem;border-radius:8px}
+.nav-dropdown a:hover,.nav-dropdown a:focus-visible{background:#6f8b7220}
+.nav-group[open] .nav-dropdown,.main-nav.open{animation:unfold .24s ease-out both}
+@keyframes unfold{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.hero{position:relative;background:radial-gradient(ellipse at 85% 50%,#6f8b7215,transparent 58%)}
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.22;background-image:radial-gradient(#b6875566 .6px,transparent .9px);background-size:7px 9px;mask-image:linear-gradient(to right,transparent,#000)}
+.hero-copy,.hero-mark{position:relative}
+.hero-mark img{animation:mark-settle .7s cubic-bezier(.2,.7,.3,1) both}
+.hero-copy h1{animation:arrive .6s ease-out both}
+@keyframes mark-settle{from{opacity:0;transform:translateY(12px) rotate(-4deg) scale(.97)}to{opacity:1;transform:none}}
+@keyframes arrive{from{opacity:.25;transform:translateY(10px)}to{opacity:1;transform:none}}
+.reveal-arrival{animation:arrive .45s ease-out both}
+.card,.feature,.event-card{transition:transform .22s,border-color .22s,box-shadow .22s;border-radius:8px 22px 12px 20px}
+@media(hover:hover){.card:hover,.feature:hover,.event-card:hover{transform:translateY(-3px);border-color:#718463;box-shadow:0 8px 28px #6f8b7214}.btn:hover{box-shadow:0 4px 18px #6f8b7233}}
+.btn{transition:transform .2s,filter .2s,box-shadow .2s;background-size:100% 160%}
+.btn:active{transform:translateY(0)}
+.auth-dialog[open]{animation:unfold .2s ease-out}
+.organic-divider{display:flex;align-items:center;justify-content:center;gap:1.2rem;padding:1.2rem;color:var(--bronze2);background:var(--bg)}
+.organic-divider::before,.organic-divider::after{content:'';width:min(28vw,240px);height:2px;background:linear-gradient(90deg,transparent,#6f8b7280);clip-path:polygon(0 30%,25% 0,60% 50%,100% 0,98% 100%,40% 80%,0 100%)}
+.organic-divider::after{transform:rotate(180deg)}
+.organic-divider span{font-family:Georgia,serif;letter-spacing:.2em;transition:color .25s,transform .25s}
+.organic-divider:hover span{color:#c5d4ae;transform:rotate(-5deg)}
+.cursor-ring{position:fixed;top:0;left:0;width:16px;height:16px;border:1px solid #a7bb8f88;border-radius:50%;pointer-events:none;z-index:101;opacity:0;transform:translate(-50%,-50%);transition:width .18s,height .18s,opacity .15s,border-color .18s}
+.cursor-ring.visible{opacity:.6}.cursor-ring.interactive{width:36px;height:36px;border-color:#c5d4ae}
+@media(max-width:900px){.nav-dropdown{position:static;min-width:0;box-shadow:none;margin-bottom:.5rem}.nav-group summary{padding:.65rem}.main-nav{max-height:calc(100dvh - 100px);overflow-y:auto}.main-nav>a{padding:.65rem}.site-header{background:rgba(18,19,15,.95)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation:none!important;transition:none!important}.cursor-ring{display:none}.card:hover,.feature:hover,.event-card:hover,.btn:hover,.organic-divider:hover span{transform:none}}
+@media(hover:none),(pointer:coarse){.cursor-ring{display:none}}
