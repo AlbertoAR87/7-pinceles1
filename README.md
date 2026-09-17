@@ -36,3 +36,22 @@ Consultar `DEPLOYMENT.md` para completar dominio, correos y verificaciones exter
 campos permitidos en la solicitud, recuperación, enlace caducado, desconexión, doble envío,
 respuestas tardías tras logout, enlaces de recursos inseguros, fallo de perfil y acceso de no asociados.
 Estas pruebas no certifican la entrega de correos ni el recorrido real de confirmación de cuenta.
+
+## Analítica opcional
+
+`analytics.js` conecta GA4 `G-EP929LYQG4` solo en `sietepinceles.es` y tras aceptar la analítica.
+No carga Google en las vistas locales, antes del consentimiento, ni en URLs con parámetros o fragmentos de autenticación.
+Solo se envían vistas con dirección limpia; no se envían perfiles, formularios ni identificadores de cuenta.
+El pie permite revisar la decisión. Rechazar borra las cookies GA, desactiva la etiqueta y recarga si estaba cargada.
+La retirada se comunica también a las otras pestañas mediante el evento de almacenamiento.
+Consentimiento y cookies: 180 días; sin renovación automática de cookies.
+
+En Google Analytics se ha desactivado Medición mejorada y se mantiene Google Signals desactivado.
+La conservación de usuarios y eventos se ha configurado en 2 meses, sin reinicio por actividad; los informes agregados tienen reglas distintas.
+No activar medición de formularios, User-ID, datos proporcionados por usuarios ni publicidad sin revisar finalidad y consentimiento.
+Las pruebas de analítica comprueban el bloqueo previo, aceptación, rechazo, retirada, cookies, persistencia, caducidad y URLs sensibles.
+La recepción real se comprueba en Analytics → Informes → Tiempo real después de aceptar en la web pública.
+El comprobador automático de etiquetas puede no detectar esta instalación porque no acepta el aviso.
+
+Referencias: [modo de consentimiento de Google](https://developers.google.com/tag-platform/security/concepts/consent-mode)
+y [criterio de la AEPD sobre aceptar y rechazar cookies](https://www.aepd.es/preguntas-frecuentes/17-internet-y-redes-sociales/FAQ-1707-importancia-de-las-cookies-en-la-proteccion-de-datos).

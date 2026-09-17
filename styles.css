@@ -203,3 +203,4 @@ h3{font-size:1.25rem;font-weight:650}h4{font-size:1.1rem}
  .event-card h2{font-size:1.85rem}
 }
 .hero{min-height:min(82vh,820px)}@media(max-width:900px){.hero{min-height:0}}
+.cookie-panel{position:fixed;inset:auto 1rem 1rem;z-index:150;max-width:680px;margin-left:auto;padding:1.25rem;background:#20261d;border:1px solid #8d987c;border-radius:16px;box-shadow:0 8px 35px #0008;max-height:80dvh;overflow:auto}.cookie-panel h2{font-family:inherit;font-size:1.15rem;max-width:none;margin:0 0 .6rem;line-height:1.4}.cookie-panel p{font-size:.9rem;color:var(--text);margin:0 0 1rem}.cookie-actions{display:flex;gap:.7rem;flex-wrap:wrap}.cookie-actions .btn{flex:1;font-size:.86rem;padding:.7rem}.cookie-panel a{text-underline-offset:3px}@media(max-width:420px){.cookie-panel{inset:auto .6rem .6rem;padding:1rem}.cookie-actions{flex-direction:column}}
