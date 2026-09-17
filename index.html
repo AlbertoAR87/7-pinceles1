@@ -9,8 +9,9 @@
   <title>7 Pinceles — El arte del desorden</title>
   <link rel="icon" href="logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="design.css">
 </head>
-<body>
+<body class="home-page">
   <noscript><p class="status-note">Para acceder a tu cuenta necesitas activar JavaScript. Puedes contactar con nosotros en info@sietepinceles.es.</p></noscript>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
@@ -37,33 +38,40 @@
   <main id="contenido">
     <section id="inicio" class="hero section">
       <div class="hero-copy">
-        <p class="eyebrow">MINIATURAS · PINTURA · MODELISMO · COMUNIDAD</p>
+        <p class="eyebrow hero-kicker"><span></span> ARTE QUE NOS REÚNE · IBIZA & ONLINE</p>
         <h1>El arte del <span>desorden</span>.</h1>
-        <p class="lead">Aunque la vida parezca revuelta, podemos aprovechar lo que tenemos para avanzar. 7 Pinceles nace para crear comunidad mediante el arte y ponerla al servicio de niños con discapacidad y sus familias.</p>
+        <p class="hero-statement">Crear algo hermoso.<br>También con lo que parece imperfecto.</p>
+        <p class="lead">Miniaturas, pintura y comunidad al servicio de niños con discapacidad y sus familias. Un espacio para aprender, compartir y avanzar juntos.</p>
         <div class="actions">
-          <a class="btn" href="#asociados">Quiero participar</a>
-          <a class="btn btn-secondary" href="#mision">Conocer el proyecto</a>
+          <a class="btn btn-arrow" href="#asociados">Quiero participar <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="#mision">Nuestra esencia <span aria-hidden="true">↓</span></a>
         </div>
-        <p class="status-note">Proyecto asociativo en proceso de constitución. La información institucional se actualizará cuando la inscripción quede formalizada.</p>
+        <p class="status-note">Proyecto asociativo en proceso de constitución.</p>
       </div>
       <div class="hero-mark" aria-hidden="true">
+        <span class="mark-caption">EL ARTE DE VOLVER A EMPEZAR</span>
+        <div class="mark-orbit"></div>
         <img src="logo.svg" alt="" width="620" height="620">
+        <div class="mark-foot"><span>7 PINCELES</span><span>CREAR · CONECTAR · AYUDAR</span></div>
       </div>
+      <div class="hero-baseline"><span>Pintura de miniaturas & modelismo</span><a href="#mision">Descubre lo que nos mueve <span aria-hidden="true">↓</span></a><span>Desde Ibiza, sin fronteras</span></div>
     </section>
 
     <section id="mision" class="section narrow">
-      <p class="eyebrow">POR QUÉ EXISTIMOS</p>
-      <h2>Arte, comunidad y ayuda con criterio.</h2>
+      <div class="section-heading"><p class="eyebrow"><span class="chapter">01 /</span> NUESTRA ESENCIA</p><div><h2>No hace falta que todo esté en orden para <em>crear algo bueno.</em></h2><p class="section-intro">Aunque la vida parezca revuelta, podemos aprovechar lo que tenemos para avanzar. Esa es la idea que da sentido a 7 Pinceles.</p></div></div>
       <div class="grid-3">
         <article class="card">
+          <span class="principle-number" aria-hidden="true">01</span>
           <h3>Crear</h3>
           <p>Pintura de miniaturas, escenografía, modelismo y actividades artísticas accesibles para aprender haciendo.</p>
         </article>
         <article class="card">
+          <span class="principle-number" aria-hidden="true">02</span>
           <h3>Conectar</h3>
           <p>Una comunidad abierta a familias, aficionados, colaboradores y personas que quieran compartir tiempo y conocimiento.</p>
         </article>
         <article class="card">
+          <span class="principle-number" aria-hidden="true">03</span>
           <h3>Ayudar</h3>
           <p>La finalidad social se centra principalmente en niños con discapacidad y sus familias, con criterios transparentes y verificables.</p>
         </article>
@@ -71,9 +79,8 @@
     </section>
 
     <section id="actividades" class="section band">
-      <div class="narrow">
-        <p class="eyebrow">QUÉ HACEMOS</p>
-        <h2>Pocas líneas, bien hechas.</h2>
+      <div class="narrow activity-layout">
+        <div class="activity-heading"><p class="eyebrow"><span class="chapter">02 /</span> DEL ARTE AL ENCUENTRO</p><h2>Pequeñas piezas.<br><em>Grandes vínculos.</em></h2><p class="section-intro">El valor está en lo que creamos y en las personas con las que lo compartimos.</p><a class="text-link" href="#evento">Nuestra próxima actividad <span aria-hidden="true">↗</span></a></div>
         <div class="grid-2">
           <article class="feature">
             <span class="feature-num">01</span>
@@ -96,7 +103,7 @@
     </section>
 
     <section id="evento" class="section narrow">
-      <p class="eyebrow">PRÓXIMA ACTIVIDAD</p>
+      <p class="eyebrow"><span class="chapter">03 /</span> NOS VEMOS ALREDEDOR DE UNA MESA</p>
       <div class="event-card">
         <div>
           <p class="event-state">PREVISTO · FECHA POR CONFIRMAR</p>
@@ -105,7 +112,7 @@
           <p>Está previsto para octubre de 2026. No publicaremos fecha definitiva ni abriremos inscripciones hasta que todos los elementos necesarios estén confirmados.</p>
         </div>
         <div class="event-meta">
-          <span>Octubre 2026</span>
+          <span class="event-month">OCTUBRE</span><strong class="event-year">2026</strong>
           <small>Fecha por cerrar</small>
         </div>
       </div>
@@ -114,13 +121,14 @@
 
     <section id="asociados" class="section band">
       <div class="narrow">
-        <p class="eyebrow">ZONA DE ASOCIADOS</p>
+        <p class="eyebrow"><span class="chapter">04 /</span> TU SITIO EN 7 PINCELES</p>
         <div class="member-layout">
           <div>
-            <h2>Una cuenta para participar de verdad.</h2>
+            <h2>Lo que sabes.<br>Lo que imaginas.<br><em>Lo que puedes aportar.</em></h2>
             <p>El registro web crea una cuenta personal. La condición de asociado no se concede automáticamente: se tramita mediante una solicitud y queda reflejada en tu perfil.</p>
             <button id="memberCta" class="btn" type="button">Crear cuenta o acceder</button>
           </div>
+          <aside class="member-welcome"><span class="welcome-mark" aria-hidden="true">VII</span><p>No necesitas ser artista.<br><em>Solo tener ganas de formar parte.</em></p><span class="eyebrow">APRENDER · COMPARTIR · ACOMPAÑAR</span></aside>
           <div id="memberPanel" class="member-panel" hidden>
             <div class="member-head">
               <div>
@@ -172,7 +180,7 @@
     </section>
 
     <section id="transparencia" class="section narrow">
-      <p class="eyebrow">COMPROMISO</p>
+      <p class="eyebrow"><span class="chapter">05 /</span> NUESTRO COMPROMISO</p>
       <h2>Transparencia antes que apariencia.</h2>
       <div class="grid-2">
         <article class="card"><h3>Sin promesas vacías</h3><p>No publicaremos impacto, ayudas, cifras o colaboraciones como hechos hasta poder verificarlos.</p></article>
@@ -184,7 +192,7 @@
       <div class="narrow contact-inner">
         <div>
           <p class="eyebrow">CONTACTO</p>
-          <h2>¿Quieres colaborar o participar?</h2>
+          <h2>Las cosas buenas empiezan con <em>una conversación.</em></h2>
           <p>Cuéntanos qué puedes aportar o qué necesitas saber. No compartas información médica ni datos de menores por correo salvo que sea imprescindible.</p>
         </div>
         <a class="btn" href="mailto:info@sietepinceles.es">info@sietepinceles.es</a>

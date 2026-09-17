@@ -34,7 +34,6 @@
   window.addEventListener('scroll', updateHeader, { passive: true });
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
   const targets = [...document.querySelectorAll('.section:not(.hero) > .eyebrow, .section:not(.hero) h2, .card, .feature, .event-card')];
   let observer;
   // Animate only on arrival: content is never hidden while waiting for JavaScript.
@@ -52,27 +51,20 @@
     }, { threshold: 0.08 });
     targets.forEach(el => observer.observe(el));
   }
-  const ring = document.createElement('div');
-  ring.className = 'cursor-ring';
-  ring.setAttribute('aria-hidden', 'true');
-  document.body.append(ring);
-  let frame = 0, x = 0, y = 0;
-  const hideRing = () => ring.classList.remove('visible');
-  document.addEventListener('pointermove', event => {
-    if (reduced.matches || !finePointer.matches || event.pointerType !== 'mouse' || document.querySelector('dialog[open]')) {
-      hideRing(); return;
-    }
-    x = event.clientX; y = event.clientY;
-    ring.classList.toggle('interactive', !!event.target.closest('a, button, summary'));
-    if (!frame) frame = requestAnimationFrame(() => {
-      ring.style.left = x + 'px'; ring.style.top = y + 'px';
-      ring.classList.add('visible'); frame = 0;
-    });
-  }, { passive: true });
-  document.documentElement.addEventListener('pointerleave', hideRing);
-  window.addEventListener('blur', hideRing);
-  document.addEventListener('visibilitychange', hideRing);
-  reduced.addEventListener('change', () => { hideRing(); observeSections(); });
-  finePointer.addEventListener('change', hideRing);
+  reduced.addEventListener('change', observeSections);
+  // Native pointer stays unchanged; indicate the section in the navigation instead.
+  if ('IntersectionObserver' in window) {
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        links.forEach(link => {
+          if (link.hash === '#' + entry.target.id) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-15% 0px -65% 0px', threshold: 0 });
+    document.querySelectorAll('main > section[id]').forEach(section => sectionObserver.observe(section));
+  }
   observeSections();
 })();
