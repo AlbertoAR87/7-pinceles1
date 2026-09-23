@@ -37,6 +37,26 @@ campos permitidos en la solicitud, recuperación, enlace caducado, desconexión,
 respuestas tardías tras logout, enlaces de recursos inseguros, fallo de perfil y acceso de no asociados.
 Estas pruebas no certifican la entrega de correos ni el recorrido real de confirmación de cuenta.
 
+## Calendario privado
+
+El perfil incluye un calendario para todas las cuentas registradas, sin exigir ser asociado activo.
+Lee únicamente actividades publicadas de `public.workshops`, después de iniciar sesión.
+La política existente permite SELECT a `authenticated` con `is_published = true`; `anon` no tiene SELECT.
+No se han ampliado permisos ni añadido claves. Se limpia la agenda al salir y se descartan respuestas de sesiones anteriores.
+Los horarios se presentan en `Europe/Madrid` (incluidos los cambios de horario).
+Sin `starts_at`, la actividad aparece en «Próximamente», fuera de la cuadrícula.
+Las inscripciones siguen cerradas.
+
+Para gestionar eventos, usar el editor de tablas del proyecto Supabase existente → `workshops`:
+editar `title`, `description`, `location` y `starts_at` solo cuando estén confirmados;
+guardar fechas con zona horaria explícita. `is_published = false` mantiene un borrador oculto.
+No colocar datos personales de asistentes en los textos. «Actualizar» vuelve a consultar la agenda.
+El taller previsto para octubre de 2026 se ha añadido sin fecha ni aforo inventados.
+
+Pruebas: `npm test` incluye sesión, cierre, respuestas tardías, fechas de Madrid, navegación, texto seguro y reintento.
+Para revisión visual local con datos ficticios: después de compilar, ejecutar `node scripts/preview-calendar.mjs`.
+Los archivos `dist/__calendar*` son solo para la revisión local y nunca deben publicarse.
+
 ## Analítica opcional
 
 `analytics.js` conecta GA4 `G-EP929LYQG4` solo en `sietepinceles.es` y tras aceptar la analítica.

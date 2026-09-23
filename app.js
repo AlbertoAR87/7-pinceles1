@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { createPrivateCalendar } from './calendar.js';
 
 const SUPABASE_URL = "https://gboifuaaswbqumxxijed.supabase.co";
 const SUPABASE_KEY = "sb_publishable_b8DSnE44g2Amxx_1l2eK0w_ZKVlEGlK";
@@ -14,6 +15,7 @@ let currentUser = null;
 let currentProfile = null;
 let sessionVersion = 0;
 let recoveryMode = false;
+const privateCalendar = createPrivateCalendar(document.querySelector('#privateCalendar'), supabase);
 
 $("#year").textContent = new Date().getFullYear();
 
@@ -309,35 +311,6 @@ async function loadResources(version = sessionVersion) {
   });
 }
 
-async function loadWorkshops() {
-  const target = $("#workshopsList");
-  const { data, error } = await supabase.from("workshops")
-    .select("title,description,starts_at,location,capacity")
-    .eq("is_published", true)
-    .order("starts_at", { ascending: true });
-  if (error || !data?.length) return;
-  target.innerHTML = "<h3>Actividades publicadas</h3>";
-  data.forEach(w => {
-    const item = document.createElement("article");
-    item.className = "workshop-item";
-    const h = document.createElement("h4");
-    h.textContent = w.title;
-    item.append(h);
-    if (w.starts_at) {
-      const d = document.createElement("p");
-      d.textContent = new Intl.DateTimeFormat("es-ES", { dateStyle:"long", timeStyle:"short" }).format(new Date(w.starts_at));
-      item.append(d);
-    }
-    if (w.location) {
-      const p = document.createElement("p"); p.textContent = w.location; item.append(p);
-    }
-    if (w.description) {
-      const p = document.createElement("p"); p.textContent = w.description; item.append(p);
-    }
-    target.append(item);
-  });
-}
-
 function updateSessionUI(user) {
   const changed = currentUser?.id !== user?.id;
   if (changed || !user) {
@@ -355,6 +328,7 @@ function updateSessionUI(user) {
   }
   currentUser = user;
   const signed = Boolean(user);
+  privateCalendar.setUser(signed && !recoveryMode ? user : null);
   $("#memberPanel").hidden = !signed || recoveryMode;
   $("#memberCta").hidden = signed;
   $("#authOpenBtn").textContent = recoveryMode ? 'Cambiar contraseña' : signed ? "Mi cuenta" : "Acceder";

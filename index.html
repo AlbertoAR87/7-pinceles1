@@ -140,6 +140,18 @@
             <div id="memberStatus" class="member-status"></div>
             <button id="reloadProfileBtn" class="link-btn" type="button">Recargar perfil</button>
 
+            <section id="privateCalendar" class="private-calendar" aria-label="Calendario de actividades" hidden>
+              <div class="calendar-heading"><div><p class="eyebrow">TU AGENDA</p><h3>Calendario de actividades</h3></div><button type="button" class="btn btn-secondary btn-small" data-retry>Actualizar</button></div>
+              <p class="calendar-note">Exclusivo para cuentas registradas. Horarios de Ibiza y España peninsular.</p>
+              <p data-calendar-status class="form-msg" role="status"></p>
+              <div data-calendar-body hidden>
+                <div class="calendar-toolbar"><button type="button" class="btn btn-secondary btn-small" data-shift="-1" aria-label="Mes anterior">‹</button><h4 data-month aria-live="polite"></h4><button type="button" class="btn btn-secondary btn-small" data-shift="1" aria-label="Mes siguiente">›</button><button type="button" class="link-btn" data-today>Este mes</button></div>
+                <div class="calendar-content"><div><table class="calendar-table"><caption>Días con actividades: pulsa una fecha marcada para ver el detalle.</caption><thead><tr><th scope="col" abbr="Lunes">L</th><th scope="col" abbr="Martes">M</th><th scope="col" abbr="Miércoles">X</th><th scope="col" abbr="Jueves">J</th><th scope="col" abbr="Viernes">V</th><th scope="col" abbr="Sábado">S</th><th scope="col" abbr="Domingo">D</th></tr></thead><tbody data-days></tbody></table></div>
+                <div><h4 data-agenda-title>Actividades del mes</h4><button type="button" class="link-btn" data-clear-day hidden>Ver todo el mes</button><div data-agenda></div></div></div>
+                <div data-pending-section hidden><h4>Próximamente · sin fecha confirmada</h4><div data-pending></div></div>
+              </div>
+            </section>
+
             <form id="profileForm" class="stack" autocomplete="on">
               <label>Nombre y apellidos
                 <input id="profileName" name="full_name" maxlength="120" required>

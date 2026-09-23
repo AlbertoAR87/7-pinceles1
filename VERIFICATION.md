@@ -48,3 +48,11 @@ La prueba conserva una cuenta técnica confirmada con estado registered y una so
 Se conserva gboifuaaswbqumxxijed. Se han retirado permisos TRUNCATE/REFERENCES/TRIGGER del cliente,
 los permisos de escritura de inscripciones de talleres y la lectura de notas administrativas.
 No se han recreado tablas ni modificado registros de usuarios reales.
+# Calendario privado — 22 de septiembre de 2026
+
+- 24 pruebas automáticas aprobadas: las nuevas cubren acceso de cuentas registradas, cierre, respuestas tardías, reintento, cambio de mes, zona Europe/Madrid y texto sin ejecución HTML.
+- Vista local con datos ficticios revisada en escritorio y móvil (390 px); selección de día y mes vacío verificadas; sin errores de consola.
+- Base real: RLS de workshops activo; SELECT como anon denegado; authenticated ve la actividad publicada y no ve un borrador temporal (transacción revertida).
+- Taller previsto para octubre incorporado con starts_at, ends_at y capacity nulos. Inscripciones no habilitadas.
+- La revisión visual utilizó una sesión simulada local, no credenciales de una persona. Las pruebas de permisos se ejecutaron en la base real.
+- El asesor de seguridad no señaló fallos RLS. Mantiene el aviso de protección contra contraseñas filtradas desactivada, ajeno al calendario: https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection
