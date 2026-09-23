@@ -4,8 +4,9 @@ import { readFile } from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
 
 const html = await readFile('index.html', 'utf8');
-const source = (await readFile('app.js', 'utf8'))
-  .replace(/^import .*?;\n/, '')
+const calendarSource = (await readFile('calendar.js', 'utf8')).replace('export function', 'function');
+const source = calendarSource + '\n' + (await readFile('app.js', 'utf8'))
+  .replace(/^import .*?;\r?\n/gm, '')
   .replace(/const supabase = createClient\([\s\S]*?\n\}\);/, 'const supabase = window.testClient;');
 const wait = () => new Promise(resolve => setTimeout(resolve, 15));
 function setup({status = 'registered', query, auth = {}, url = 'https://example.org/7-pinceles1/'} = {}) {
@@ -49,6 +50,59 @@ function setup({status = 'registered', query, auth = {}, url = 'https://example.
   const event = (name, user = account) => authCallback(name, user ? {user} : null);
   return { dom,w,$,submit,event,calls,client,account };
 }
+
+test('calendar is private, loads for registered nonmembers, keeps undated activities outside grid and clears on logout', async () => {
+  const t = setup({query:s=>s.table==='workshops' ? {data:[{title:'Taller pendiente',starts_at:null,description:'Octubre por confirmar'}],error:null}:undefined});
+  assert.equal(t.$('#privateCalendar').hidden,true);
+  assert.equal(t.calls.some(c=>c.table==='workshops'),false);
+  t.event('SIGNED_IN'); await wait();
+  assert.equal(t.$('#privateCalendar').hidden,false);
+  assert.match(t.$('[data-pending]').textContent,/Taller pendiente/);
+  assert.equal(t.$('[data-days]').querySelectorAll('button').length,0);
+  assert.equal(t.calls.find(c=>c.table==='workshops').is_published,true);
+  t.event('TOKEN_REFRESHED'); await wait();
+  assert.equal(t.calls.filter(c=>c.table==='workshops').length,1);
+  t.event('SIGNED_OUT',null); await wait();
+  assert.equal(t.$('#privateCalendar').hidden,true);
+  assert.equal(t.$('[data-pending]').textContent,'');
+  t.dom.window.close();
+});
+
+test('calendar uses Madrid dates, supports month navigation and escapes event text', async () => {
+  const now = new Date();
+  const month = new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit'}).format(now);
+  const t = setup({query:s=>s.table==='workshops' ? {data:[{title:'<img src=x onerror=alert(1)>',starts_at:month+'-01T23:30:00Z'}],error:null}:undefined});
+  t.event('SIGNED_IN'); await wait();
+  assert.ok(t.$(`[data-day="${month}-02"]`));
+  t.$(`[data-day="${month}-02"]`).click();
+  assert.match(t.$('[data-agenda-title]').textContent,/del 2/);
+  assert.equal(t.$('[data-agenda]').querySelector('img'),null);
+  assert.match(t.$('[data-agenda]').textContent,/<img/);
+  const original=t.$('[data-month]').textContent;
+  t.$('[data-shift="1"]').click(); assert.notEqual(t.$('[data-month]').textContent,original);
+  t.$('[data-shift="-1"]').click(); assert.equal(t.$('[data-month]').textContent,original);
+  t.dom.window.close();
+});
+
+test('late calendar response cannot reappear after logout', async () => {
+  let finish;
+  const t=setup({query:s=>s.table==='workshops' ? new Promise(resolve=>finish=resolve):undefined});
+  t.event('SIGNED_IN'); await wait(); t.event('SIGNED_OUT',null); await wait();
+  finish({data:[{title:'Private event',starts_at:null}],error:null}); await wait();
+  assert.equal(t.$('#privateCalendar').hidden,true);
+  assert.equal(t.$('[data-pending]').textContent,''); t.dom.window.close();
+});
+
+test('calendar load errors can be retried without opening registrations', async () => {
+  let fails=true;
+  const t=setup({query:s=>s.table==='workshops' ? {data:[],error:fails?{message:'offline'}:null}:undefined});
+  t.event('SIGNED_IN'); await wait();
+  assert.match(t.$('[data-calendar-status]').textContent,/No se pudo/);
+  assert.equal(t.$('[data-retry]').disabled,false);
+  fails=false;t.$('[data-retry]').click();await wait();
+  assert.equal(t.$('[data-calendar-body]').hidden,false);
+  assert.match(t.$('[data-calendar-status]').textContent,/Todavía no hay/);t.dom.window.close();
+});
 
 test('Mi cuenta shows private panel without reopening login; signout clears data', async () => {
   const t=setup(); t.event('SIGNED_IN'); await wait();
