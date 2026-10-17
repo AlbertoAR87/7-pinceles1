@@ -6,6 +6,7 @@ await build({ entryPoints: ['app.js'], bundle: true, minify: true, format: 'esm'
 for (const name of ['index.html', 'styles.css', 'design.css', 'effects.js', 'analytics.js', 'logo.svg', 'privacidad.html']) await copyFile(name, `dist/${name}`);
 await copyFile('404.html', 'dist/404.html');
 await copyFile('CNAME', 'dist/CNAME');
+await copyFile('angel-premio-pintura.jpg', 'dist/angel-premio-pintura.jpg');
 const source = await readFile('app.js', 'utf8');
 if (/sb_secret_|eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\./.test(source)) throw new Error('Unexpected secret/JWT in frontend');
 if (!source.includes('sb_publishable_') || !source.includes('gboifuaaswbqumxxijed')) throw new Error('Unexpected Supabase project/key');
