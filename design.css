@@ -6,6 +6,7 @@
 .news-lead{line-height:1.8}.news-story{border-top:1px solid var(--line);margin-top:1.5rem;padding-top:1rem}
 .news-story summary{cursor:pointer;color:var(--bronze2);padding:.6rem 0;font-weight:600;min-height:44px}.news-story summary:focus-visible{outline:2px solid var(--bronze2);outline-offset:5px}
 .news-story p{line-height:1.8}.news-story[open] summary{margin-bottom:1rem}
+.news-share{margin-top:1.5rem}.news-share .text-link{display:inline-block;margin:.75rem 0 .75rem 1rem}.news-share input{width:100%;min-width:0}.news-share [hidden]{display:none}
 @media(max-width:760px){.news-feature{grid-template-columns:1fr}.news-photo{max-width:100%}}
 .home-page .member-layout:has(.member-panel:not([hidden])){grid-template-columns:1fr}
 .home-page .member-layout:has(.member-panel:not([hidden]))>div:first-child{display:none}

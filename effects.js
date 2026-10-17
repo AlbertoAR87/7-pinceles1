@@ -67,4 +67,26 @@
     document.querySelectorAll('main > section[id]').forEach(section => sectionObserver.observe(section));
   }
   observeSections();
+  const copyNews = document.querySelector('[data-copy-news]');
+  if (copyNews) {
+    copyNews.hidden = false;
+    copyNews.addEventListener('click', async () => {
+      const status = document.querySelector('[data-copy-news-status]');
+      const fallback = document.querySelector('[data-copy-news-fallback]');
+      copyNews.disabled = true;
+      try {
+        await navigator.clipboard.writeText('https://sietepinceles.es/#noticias');
+        fallback.hidden = true;
+        status.textContent = 'Enlace copiado. Ya puedes pegarlo donde quieras compartirlo.';
+      } catch {
+        fallback.hidden = false;
+        status.textContent = 'No se ha podido copiar automáticamente. Puedes copiarlo en el campo de abajo.';
+        const input = fallback.querySelector('input');
+        input.focus();
+        input.select();
+      } finally {
+        copyNews.disabled = false;
+      }
+    });
+  }
 })();

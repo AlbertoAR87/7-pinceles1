@@ -24,12 +24,13 @@
     <nav id="mainNav" class="main-nav" aria-label="Navegación principal">
       <details class="nav-group">
         <summary>Conócenos</summary>
-        <div class="nav-dropdown"><a href="#mision">Nuestra misión</a><a href="#noticias">Noticias</a><a href="#transparencia">Transparencia</a></div>
+        <div class="nav-dropdown"><a href="#mision">Nuestra misión</a><a href="#transparencia">Transparencia</a></div>
       </details>
       <details class="nav-group">
         <summary>Participa</summary>
         <div class="nav-dropdown"><a href="#actividades">Actividades</a><a href="#evento">Próximo taller</a><a href="#asociados">Zona de asociados</a></div>
       </details>
+      <a href="#noticias">Actualidad</a>
       <a href="#contacto">Contacto</a>
       <button id="authOpenBtn" class="btn btn-small" type="button">Acceder</button>
     </nav>
@@ -77,6 +78,14 @@
               <p><strong>¡Enhorabuena, Ángel, y gracias por llevar el nombre de 7 Pinceles a la mesa de juego!</strong></p>
             </div>
           </details>
+          <div class="news-share">
+            <button class="btn btn-secondary btn-small" type="button" data-copy-news hidden>Copiar enlace de la noticia</button>
+            <a class="text-link" href="https://sietepinceles.es/#noticias">Enlace directo <span aria-hidden="true">↗</span></a>
+            <p class="form-msg" data-copy-news-status role="status"></p>
+            <label class="stack" data-copy-news-fallback hidden>Selecciona y copia este enlace:
+              <input type="url" value="https://sietepinceles.es/#noticias" readonly aria-label="Enlace de la noticia">
+            </label>
+          </div>
         </div>
       </article>
     </section>
