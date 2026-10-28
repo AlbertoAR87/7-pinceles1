@@ -15,6 +15,11 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-s
 a{color:inherit}
 img{max-width:100%;height:auto}
 button,input,textarea{font:inherit}
+.password-control{position:relative;display:block;width:100%}
+.password-control input{padding-right:3.7rem}
+.password-eye{position:absolute;right:3px;top:50%;transform:translateY(-50%);width:48px;height:44px;display:grid;place-items:center;border:0;border-radius:9px;background:transparent;cursor:pointer;color:#b7bd7d}
+.password-eye:hover{background:#b7bd7d18}.password-eye:focus-visible{outline:2px solid #d0a46e;outline-offset:1px}
+.password-eye svg{width:34px;height:28px;overflow:visible}.eye-lid{fill:#444e30;stroke:#a2aa6d;stroke-width:1.6}.eye-fold{fill:none;stroke:#9eaa69;stroke-width:1.6;stroke-linecap:round}.eye-iris{fill:#b8a65e;stroke:#ced197;stroke-width:1}.eye-pupil{fill:#182013}.eye-glint{fill:#f4efd0}.eye-bump{fill:#7b864b;stroke:#b4bd7e;stroke-width:1}.eye-slash{fill:none;stroke:#e0c399;stroke-width:2.4;stroke-linecap:round;paint-order:stroke;filter:drop-shadow(0 1px 1px #111)}.password-eye[aria-pressed="true"] .eye-slash{display:none}
 button{color:inherit}
 .skip-link{position:fixed;left:1rem;top:-5rem;z-index:999;background:#fff;color:#111;padding:.7rem 1rem;border-radius:.5rem}
 .skip-link:focus{top:1rem}

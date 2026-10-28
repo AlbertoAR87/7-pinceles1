@@ -90,3 +90,39 @@
     });
   }
 })();
+
+// Visibility is local to each field; passwords stay hidden on submit and close.
+(() => {
+  const controls = [];
+  document.querySelectorAll('input[type="password"]').forEach(input => {
+    const wrapper = document.createElement('span');
+    wrapper.className = 'password-control';
+    input.before(wrapper);
+    wrapper.append(input);
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'password-eye';
+    toggle.setAttribute('aria-controls', input.id);
+    toggle.innerHTML = '<svg viewBox="0 0 40 32" aria-hidden="true" focusable="false"><path class="eye-lid" d="M3 17C7 8 11 6 19 8c8-4 15 2 18 9-6 9-12 10-18 8C11 27 6 23 3 17Z"/><path class="eye-fold" d="M8 7 6 4m12 1 1-3m11 5 3-3M8 26l-2 3m23-3 2 3"/><ellipse class="eye-iris" cx="20" cy="17" rx="7" ry="8"/><ellipse class="eye-pupil" cx="20" cy="17" rx="2.5" ry="6"/><circle class="eye-glint" cx="22" cy="14" r="1.4"/><circle class="eye-bump" cx="8" cy="13" r="2"/><circle class="eye-bump" cx="31" cy="22" r="2.2"/><path class="eye-slash" d="M5 3 35 29"/></svg>';
+    const hide = () => {
+      input.type = 'password';
+      toggle.setAttribute('aria-label', 'Mostrar contraseña');
+      toggle.setAttribute('aria-pressed', 'false');
+    };
+    hide();
+    toggle.addEventListener('click', event => {
+      event.preventDefault();
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      toggle.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      toggle.setAttribute('aria-pressed', String(show));
+    });
+    wrapper.append(toggle);
+    input.form?.addEventListener('submit', hide, true);
+    controls.push(hide);
+  });
+  document.querySelector('#authDialog')?.addEventListener('close', () => controls.forEach(hide => hide()));
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) controls.forEach(hide => hide());
+  });
+})();
