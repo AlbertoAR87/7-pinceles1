@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { createPrivateCalendar } from './calendar.js';
+import { createAdminPanel } from './admin.js';
 
 const SUPABASE_URL = "https://gboifuaaswbqumxxijed.supabase.co";
 const SUPABASE_KEY = "sb_publishable_b8DSnE44g2Amxx_1l2eK0w_ZKVlEGlK";
@@ -15,6 +16,7 @@ let currentUser = null;
 let currentProfile = null;
 let sessionVersion = 0;
 let recoveryMode = false;
+const adminPanel = createAdminPanel(document.querySelector('#adminPanel'), supabase);
 const privateCalendar = createPrivateCalendar(document.querySelector('#privateCalendar'), supabase);
 
 $("#year").textContent = new Date().getFullYear();
@@ -329,6 +331,7 @@ function updateSessionUI(user) {
   currentUser = user;
   const signed = Boolean(user);
   privateCalendar.setUser(signed && !recoveryMode ? user : null);
+  void adminPanel.setUser(signed && !recoveryMode ? user : null);
   $("#memberPanel").hidden = !signed || recoveryMode;
   $("#memberCta").hidden = signed;
   $("#authOpenBtn").textContent = recoveryMode ? 'Cambiar contraseña' : signed ? "Mi cuenta" : "Acceder";
