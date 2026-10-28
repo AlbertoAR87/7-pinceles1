@@ -5,7 +5,8 @@ import { JSDOM } from 'jsdom';
 
 const html = await readFile('index.html', 'utf8');
 const calendarSource = (await readFile('calendar.js', 'utf8')).replace('export function', 'function');
-const source = calendarSource + '\n' + (await readFile('app.js', 'utf8'))
+const adminSource = (await readFile('admin.js', 'utf8')).replaceAll('export function', 'function');
+const source = adminSource + '\n' + calendarSource + '\n' + (await readFile('app.js', 'utf8'))
   .replace(/^import .*?;\r?\n/gm, '')
   .replace(/const supabase = createClient\([\s\S]*?\n\}\);/, 'const supabase = window.testClient;');
 const wait = () => new Promise(resolve => setTimeout(resolve, 15));
