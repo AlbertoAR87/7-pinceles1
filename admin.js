@@ -46,7 +46,8 @@ export function createAdminPanel(root, client) {
   };
   async function rpc(action, payload = {}) {
     const stamp = version;
-    const response = await client.rpc('admin_panel', { action, payload });
+    const preActions = {preinscriptions_list:'admin_list',preinscription_save:'admin_save',preinscription_open:'event_save'};
+    const response = await client.rpc(preActions[action] ? 'workshop_preinscription' : 'admin_panel', { action:preActions[action] || action, payload });
     if (stamp !== version) throw Object.assign(new Error(), { stale: true });
     if (response.error) {
       if (response.error.code === '42501') {
@@ -119,7 +120,7 @@ export function createAdminPanel(root, client) {
       ends = field(form, 'Fin (opcional)', 'ends_at', madridInput(item.ends_at), 'datetime-local');
       location = field(form, 'Lugar', 'location', item.location, 'text', 250);
       capacity = field(form, 'Aforo confirmado (opcional)', 'capacity', item.capacity, 'number'); capacity.min = '1'; capacity.step = '1';
-      form.append(element('p', 'Publicar lo muestra en el calendario de cuentas registradas. Las inscripciones siguen cerradas.', 'admin-note'));
+      form.append(element('p', 'Publicar lo muestra en el calendario. La preinscripción se abre o cierra desde la ficha del taller. Para confirmar plazas, indica antes fecha y aforo.', 'admin-note'));
     } else {
       url = field(form, 'Enlace HTTPS', 'url', item.url, 'url', 2000); url.required = true; url.pattern = 'https://.+';
       category = field(form, 'Categoría (opcional)', 'category', item.category, 'text', 120);
@@ -143,6 +144,10 @@ export function createAdminPanel(root, client) {
     card.append(element('h4', item.title), element('p', item.is_published ? 'Publicado' : 'Borrador oculto'));
     if (kind === 'workshops') card.append(element('p', item.starts_at ? new Date(item.starts_at).toLocaleString('es-ES', { timeZone: 'Europe/Madrid' }) : 'Sin fecha confirmada'));
     if (item.description) card.append(element('p', item.description));
+    if (kind === 'workshops') {
+      card.append(button('Abrir preinscripción',()=>void save('preinscription_open',{workshop_id:item.id,is_open:true},'¿Abrir la preinscripción para cuentas registradas?').catch(fail)));
+      card.append(button('Cerrar preinscripción',()=>void save('preinscription_open',{workshop_id:item.id,is_open:false},'¿Cerrar nuevas preinscripciones? Las solicitudes se conservarán.').catch(fail)));
+    }
     card.append(button('Editar', () => { body.replaceChildren(editor(kind, item)); body.querySelector('input')?.focus(); }));
     return card;
   }
@@ -172,7 +177,15 @@ export function createAdminPanel(root, client) {
     if (view === 'access') body.append(button('Dar acceso', () => { body.replaceChildren(accessEditor()); body.querySelector('input')?.focus(); }));
     if (!rows?.length) body.append(element('p', 'No hay registros en esta página.'));
     for (const item of rows || []) {
-      if (view === 'members') body.append(renderMember(item));
+      if (view === 'preinscriptions') {
+        const card=element('article',undefined,'admin-card');
+        card.append(element('h4',item.full_name),element('p',item.email),element('p',item.title),element('p',
+          'Participantes: '+item.participants+' · Menores: '+item.minors+' · Estado: '+({pending:'Pendiente',confirmed:'Confirmada',waitlist:'En espera',cancelled:'Cancelada'}[item.status])));
+        for (const [value,label] of Object.entries({pending:'Dejar pendiente',confirmed:'Confirmar plaza',waitlist:'Lista de espera',cancelled:'Cancelar'})) {
+          if(value!==item.status)card.append(button(label,()=>void save('preinscription_save',{id:item.id,status:value,expected_updated_at:item.updated_at},'¿Cambiar esta solicitud a '+label.toLowerCase()+'? La persona verá el cambio en su cuenta. No se envía un correo automático.').catch(fail)));
+        }
+        body.append(card);
+      } else if (view === 'members') body.append(renderMember(item));
       else if (view === 'workshops' || view === 'resources') body.append(renderContent(item, view));
       else if (view === 'access') {
         const card = element('article', undefined, 'admin-card');
@@ -205,6 +218,7 @@ export function createAdminPanel(root, client) {
     area.append(element('h3', 'Administración'), element('p', 'Gestiona únicamente las áreas para las que tienes permiso. Los cambios quedan registrados.', 'admin-note'));
     nav = element('nav', undefined, 'admin-nav'); nav.setAttribute('aria-label', 'Áreas de administración');
     const views = Object.entries(permissionLabels).filter(([key]) => access.permissions.includes(key));
+    if (access.permissions.includes('workshops')) views.push(['preinscriptions','Preinscripciones']);
     if (access.is_owner) views.push(['access', 'Administradores'], ['audit', 'Historial']);
     activeView = views[0]?.[0] || '';
     for (const [key, label] of views) {

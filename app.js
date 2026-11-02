@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { createPrivateCalendar } from './calendar.js';
+import { createPreinscription } from './preinscripcion.js';
 import { createAdminPanel } from './admin.js';
 
 const SUPABASE_URL = "https://gboifuaaswbqumxxijed.supabase.co";
@@ -18,6 +19,8 @@ let sessionVersion = 0;
 let recoveryMode = false;
 const adminPanel = createAdminPanel(document.querySelector('#adminPanel'), supabase);
 const privateCalendar = createPrivateCalendar(document.querySelector('#privateCalendar'), supabase);
+
+const preinscription = createPreinscription(document.querySelector('#preinscripcion'), supabase, () => openAuth('login'));
 
 $("#year").textContent = new Date().getFullYear();
 
@@ -97,7 +100,7 @@ bindForm("#registerForm", async (e) => {
   const fullName = $("#registerName").value.trim();
   if (!fullName) return setMsg(authMsg, 'Escribe tu nombre.', 'error');
   if (!$("#registerPrivacy").checked) return setMsg(authMsg, "Debes aceptar el tratamiento de datos de la cuenta.", "error");
-  const redirectTo = new URL('./', location.href).href;
+  const redirectTo = new URL('./#preinscripcion', location.href).href;
   const { data, error } = await supabase.auth.signUp({
     email, password,
     options: { data: { full_name: fullName }, emailRedirectTo: redirectTo }
@@ -330,6 +333,7 @@ function updateSessionUI(user) {
   }
   currentUser = user;
   const signed = Boolean(user);
+  preinscription.setUser(signed && !recoveryMode ? user : null);
   privateCalendar.setUser(signed && !recoveryMode ? user : null);
   void adminPanel.setUser(signed && !recoveryMode ? user : null);
   $("#memberPanel").hidden = !signed || recoveryMode;

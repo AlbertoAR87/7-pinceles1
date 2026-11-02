@@ -62,7 +62,7 @@ export function createPrivateCalendar(root, client) {
     article.append(node('h4', event.title));
     if (event.location) article.append(node('p', event.location));
     if (event.description) article.append(node('p', event.description));
-    article.append(node('small', 'Inscripciones todavía no disponibles.'));
+    const link = node('a', 'Consultar mis preinscripciones'); link.href = '#preinscripcion'; article.append(link);
     return article;
   }
   async function load() {
