@@ -31,12 +31,17 @@ export function createPreinscription(root, client, openAuth) {
     if(row.status)card.append(node('p',`Estado: ${labels[row.status]}. Participantes: ${row.participants}; menores: ${row.minors}.`));
     if(row.status&&row.status!=='cancelled') {
       const stamp=revision;
-      card.append(button('Cancelar preinscripción',async e=>{
-        if(!doc.defaultView.confirm('¿Cancelar esta preinscripción para todos sus participantes?'))return;
-        e.target.disabled=true;
+      const cancelArea=node('div');
+      const cancel=button('Cancelar preinscripción',()=>{cancel.hidden=true;confirmation.hidden=false;yes.focus();});
+      const confirmation=node('div');confirmation.hidden=true;
+      confirmation.append(node('p','¿Cancelar esta preinscripción para todos sus participantes?'));
+      const yes=button('Sí, cancelar mi preinscripción',async e=>{
+        e.target.disabled=true;keep.disabled=true;
         try{await rpc('cancel',{workshop_id:row.id});await load();if(stamp+1===revision)msg.textContent='Preinscripción cancelada.';}
-        catch(error){if(!error.stale){msg.textContent=error.message;e.target.disabled=false;}}
-      }));
+        catch(error){if(!error.stale){msg.textContent=error.message;e.target.disabled=false;keep.disabled=false;}}
+      });
+      const keep=button('Mantener preinscripción',()=>{confirmation.hidden=true;cancel.hidden=false;cancel.focus();});
+      confirmation.append(yes,keep);cancelArea.append(cancel,confirmation);card.append(cancelArea);
     }else if(row.is_open) {
       const form=node('form','','stack');
       const count=(title,value,min)=>{const label=node('label',title);const input=node('input');input.type='number';input.min=String(min);input.max='30';input.step='1';input.value=String(value);input.required=true;label.append(input);form.append(label);return input;};

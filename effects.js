@@ -75,7 +75,7 @@
       const fallback = document.querySelector('[data-copy-news-fallback]');
       copyNews.disabled = true;
       try {
-        await navigator.clipboard.writeText('https://sietepinceles.es/#noticias');
+        await navigator.clipboard.writeText('https://sietepinceles.es/#newsHeading');
         fallback.hidden = true;
         status.textContent = 'Enlace copiado. Ya puedes pegarlo donde quieras compartirlo.';
       } catch {
