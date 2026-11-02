@@ -126,3 +126,33 @@
     if (document.hidden) controls.forEach(hide => hide());
   });
 })();
+
+// Public totals: no profiles, identities or session data are requested.
+(() => {
+  const web = document.querySelector('[data-community-web]');
+  const members = document.querySelector('[data-community-members]');
+  if (!web || !members) return;
+  let busy = false;
+  async function refresh() {
+    if (busy || document.hidden) return;
+    busy = true;
+    try {
+      const response = await fetch('https://gboifuaaswbqumxxijed.supabase.co/rest/v1/rpc/community_counts', {
+        method: 'POST', cache: 'no-store', signal: AbortSignal.timeout(10000),
+        headers: {apikey: 'sb_publishable_b8DSnE44g2Amxx_1l2eK0w_ZKVlEGlK', 'Content-Type': 'application/json'},
+        body: '{}'
+      });
+      if (!response.ok) throw new Error('Unavailable');
+      const counts = await response.json();
+      if (![counts.web_accounts, counts.active_members].every(n => Number.isSafeInteger(n) && n >= 0) || counts.active_members > counts.web_accounts) throw new Error('Invalid totals');
+      web.textContent = new Intl.NumberFormat('es-ES').format(counts.web_accounts);
+      members.textContent = new Intl.NumberFormat('es-ES').format(counts.active_members);
+      web.removeAttribute('aria-label'); members.removeAttribute('aria-label');
+    } catch {
+      for (const el of [web, members]) { el.textContent = '—'; el.setAttribute('aria-label', 'Total no disponible temporalmente'); }
+    } finally { busy = false; }
+  }
+  void refresh();
+  setInterval(() => { void refresh(); }, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) void refresh(); });
+})();

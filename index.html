@@ -12,6 +12,14 @@
   <link rel="stylesheet" href="design.css?v=20261018-community">
   <link rel="stylesheet" href="gallery.css">
   <link rel="stylesheet" href="admin.css">
+  <style>
+    .home-page .site-header{flex-wrap:wrap;row-gap:.6rem}
+    .community-counts{flex-basis:100%;display:flex;justify-content:flex-end;align-items:center;gap:1.5rem;border-top:1px solid #eee9df20;padding-top:.5rem;color:#d6dccb;font-size:.8rem;line-height:1.4}
+    .community-counts>span{display:flex;align-items:baseline;gap:.5rem}
+    .community-counts strong{font-size:1.1rem;font-variant-numeric:tabular-nums;color:#dfc18d}
+    @media(max-width:900px){.home-page .main-nav{top:100%}.community-counts{justify-content:center;gap:1.3rem}}
+    @media(max-width:360px){.community-counts{gap:.8rem;font-size:.74rem}}
+  </style>
 </head>
 <body class="home-page">
   <noscript><p class="status-note">Para acceder a tu cuenta necesitas activar JavaScript. Puedes contactar con nosotros en info@sietepinceles.es.</p></noscript>
@@ -37,6 +45,10 @@
       <a href="#contacto">Contacto</a>
       <button id="authOpenBtn" class="btn btn-small" type="button">Acceder</button>
     </nav>
+    <div class="community-counts" aria-label="Nuestra comunidad" title="Cuentas web con correo confirmado y socios aprobados en estado activo. Totales actualizados automáticamente.">
+      <span><strong data-community-web>…</strong> Cuentas web</span>
+      <span><strong data-community-members>…</strong> Socios activos</span>
+    </div>
   </header>
 
   <main id="contenido">
