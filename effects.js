@@ -156,3 +156,42 @@
   setInterval(() => { void refresh(); }, 60000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) void refresh(); });
 })();
+
+// Event sharing always uses the public URL, without account or session details.
+(() => {
+  const share = document.querySelector('[data-share-event]');
+  const copy = document.querySelector('[data-copy-event]');
+  if (!share || !copy) return;
+  const status = document.querySelector('[data-share-event-status]');
+  const fallback = document.querySelector('[data-share-event-fallback]');
+  const url = 'https://sietepinceles.es/#evento';
+  share.hidden = false; copy.hidden = false;
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(url);
+      fallback.hidden = true;
+      status.textContent = 'Enlace copiado. Ya puedes pegarlo en WhatsApp, redes o donde quieras compartirlo.';
+    } catch {
+      fallback.hidden = false;
+      status.textContent = 'No se ha podido copiar automáticamente. Selecciona y copia el enlace del campo.';
+      const input = fallback.querySelector('input'); input.focus(); input.select();
+    }
+  }
+  async function act(nativeShare) {
+    if (share.disabled) return;
+    share.disabled = true; copy.disabled = true; status.textContent = '';
+    try {
+      if (nativeShare && typeof navigator.share === 'function') {
+        try {
+          await navigator.share({title:'Pinceladas del Caos · 7 Pinceles',text:'Preinscripción al taller de pintura de miniaturas en Xerinola. Fecha y horario por confirmar. Necesitas una cuenta web; no hace falta ser socio.',url});
+          fallback.hidden = true; status.textContent = 'Opciones para compartir cerradas.';
+        } catch (error) {
+          if (error.name === 'AbortError') status.textContent = 'Has cerrado las opciones para compartir. Puedes copiar el enlace cuando quieras.';
+          else await copyLink();
+        }
+      } else await copyLink();
+    } finally { share.disabled = false; copy.disabled = false; }
+  }
+  share.addEventListener('click', () => { void act(true); });
+  copy.addEventListener('click', () => { void act(false); });
+})();
