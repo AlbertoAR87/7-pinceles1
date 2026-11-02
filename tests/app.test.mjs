@@ -6,7 +6,8 @@ import { JSDOM } from 'jsdom';
 const html = await readFile('index.html', 'utf8');
 const calendarSource = (await readFile('calendar.js', 'utf8')).replace('export function', 'function');
 const adminSource = (await readFile('admin.js', 'utf8')).replaceAll('export function', 'function');
-const source = adminSource + '\n' + calendarSource + '\n' + (await readFile('app.js', 'utf8'))
+const preSource = (await readFile('preinscripcion.js','utf8')).replaceAll('export function','function');
+const source = preSource + '\n' + adminSource + '\n' + calendarSource + '\n' + (await readFile('app.js', 'utf8'))
   .replace(/^import .*?;\r?\n/gm, '')
   .replace(/const supabase = createClient\([\s\S]*?\n\}\);/, 'const supabase = window.testClient;');
 const wait = () => new Promise(resolve => setTimeout(resolve, 15));
@@ -194,7 +195,7 @@ test('registration uses the hosting base URL for email confirmation', async () =
   t.$('#registerName').value='Prueba Web'; t.$('#registerEmail').value='test@example.org';
   t.$('#registerPassword').value='Example123!'; t.$('#registerPrivacy').checked=true;
   t.submit('#registerForm'); await wait();
-  assert.equal(saved.options.emailRedirectTo,'https://example.org/7-pinceles1/');
+  assert.equal(saved.options.emailRedirectTo,'https://example.org/7-pinceles1/#preinscripcion');
   assert.match(t.$('#authMsg').textContent,/Revisa tu correo/); t.dom.window.close();
 });
 test('profile update sends editable fields and updates greeting', async () => {

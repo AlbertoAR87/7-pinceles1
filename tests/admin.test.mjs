@@ -16,6 +16,14 @@ function setup(handler = () => ({ data: null, error: null })) {
 }
 const owner = { role: 'admin', is_owner: true, permissions: ['members', 'workshops', 'resources'] };
 
+test('workshop administrators manage preinscriptions through dedicated endpoint with stale-update marker', async () => {
+  const t=setup(action=>({data:action==='access'?owner:action==='admin_list'?[{id:'r',full_name:'Prueba',email:'test@example.invalid',title:'Taller',participants:2,minors:1,status:'pending',updated_at:'stamp'}]:[],error:null}));
+  await t.panel.setUser({id:'admin'});t.click('Administración');await tick();t.click('Preinscripciones');await tick();
+  assert.match(t.root.textContent,/Participantes: 2/);t.click('Lista de espera');await tick();
+  assert.deepEqual(t.calls.find(c=>c.action==='admin_save').payload,{id:'r',status:'waitlist',expected_updated_at:'stamp'});
+  t.dom.window.close();
+});
+
 test('nonadmins and editable metadata cannot reveal panel or trigger private lists', async () => {
   const t = setup();
   await t.panel.setUser({ id: 'normal', user_metadata: { role: 'admin', is_owner: true } });
