@@ -13,3 +13,5 @@ if (!source.includes('sb_publishable_') || !source.includes('gboifuaaswbqumxxije
 console.log('Build complete: only public assets in dist/.');
 
 for (const id of ["dNr4Cb-JArE","avYRQRK-rB4","CoAiWHTd89k","sdUXyjXP-Do","fXBnWqLWemA","iqN2dFAZnnM"]) await copyFile('gallery-' + id + '.jpg', 'dist/gallery-' + id + '.jpg');
+
+await copyFile('cartel-pinceladas-del-caos.jpg', 'dist/cartel-pinceladas-del-caos.jpg');
