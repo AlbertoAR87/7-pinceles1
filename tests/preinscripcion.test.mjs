@@ -31,6 +31,8 @@ test('network error is recoverable and user content cannot insert HTML',async()=
 });
 test('closed events do not offer forms; cancellation only includes event reference',async()=>{
  const t=setup(a=>a.action==='mine'?{data:[{id:'w',title:'Taller',is_open:false,status:'pending',participants:1,minors:0}]}:{data:{ok:true}});
- t.api.setUser({id:'a'});await wait();assert.equal(t.root.querySelector('form'),null);t.root.querySelector('article button').click();await wait();
+ t.api.setUser({id:'a'});await wait();assert.equal(t.root.querySelector('form'),null);t.root.querySelector('article button').click();
+ assert.equal(t.calls.some(c=>c.action==='cancel'),false);
+ [...t.root.querySelectorAll('button')].find(b=>b.textContent==='Sí, cancelar mi preinscripción').click();await wait();
  assert.deepEqual(t.calls.find(c=>c.action==='cancel').payload,{workshop_id:'w'});t.dom.window.close();
 });
